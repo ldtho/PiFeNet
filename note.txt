@@ -1,0 +1,287 @@
+set --resume=True if want to resume
+conda create --name spconv pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 pillow jupyterlab pybind11 tensorboardx opencv scikit-learn scipy numba matplotlib fire opencv vtk joblib easydict open3d terminaltables pytest-runner pygments pycocotools imgaug objgraph cudnn cudatoolkit=11.0 cmake boost cudatoolkit-dev -c pytorch
+conda create --name spconv12cuda11 pytorch==1.8.1 torchvision==0.9.1 pillow jupyterlab pybind11 tensorboardx scikit-learn scipy numba matplotlib fire opencv vtk joblib easydict open3d terminaltables pytest-runner pygments pycocotools imgaug objgraph cudnn cudatoolkit=11.1 cmake boost cudatoolkit-dev -c pytorch
+
+conda install addict boost einops fire jupyterlab libboost matplotlib numba numpy open3d opencv pandas pillow protobuf scikit-image scikit-learn scipy seaborn tensorboardx tqdm yaml
+conda install pillow jupyterlab pybind11 tensorboardx opencv scikit-learn scipy numba matplotlib fire opencv vtk joblib easydict open3d terminaltables pytest-runner pygments pycocotools imgaug objgraph cudnn cmake boost -c conda-forge -c anaconda -c open3d-admin
+
+#july installation
+conda create --name spconv12cuda11 python=3.8.6 pytorch=1.7.1 cudatoolkit=11.0.221 cudatoolkit-dev cmake=3.18.2 cuda-nvcc cudnn boost -c pytorch -c conda-forge -c nvidia
+conda install addict einops fire jupyterlab jupyter-packaging tensorboard libboost matplotlib numba numpy open3d addict scikit-image psutil boost einops scikit-learn fire jupyterlab tensorboardx libboost matplotlib numba numpy open3d pandas pillow protobuf scipy seaborn tqdm yaml -c pytorch -c conda-forge -c nvidia -c numba -c open3d-admin
+
+#july installation old
+conda create --name spconv12cuda11 python=3.9 pytorch==1.8.1 torchvision=0.9.1 cudatoolkit=11.1
+    cudnn cmake=3.18.2 cuda-nvcc addict boost einops fire jupyterlab libboost matplotlib numba numpy open3d
+    cudatoolkit-dev addict scikit-image psutil boost einops scikit-learn fire jupyterlab tensorboardx libboost matplotlib numba numpy open3d pandas pillow protobuf scipy seaborn tqdm yaml
+    -c pytorch -c conda-forge -c nvidia -c numba -c open3d-admin
+
+conda create --name spconv12cuda11 torch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0
+    cudnn cmake=3.18 addict boost einops fire jupyterlab libboost matplotlib numba numpy open3d
+    cudatoolkit-dev addict scikit-image psutil boost einops scikit-learn fire jupyterlab tensorboardx libboost matplotlib numba numpy pandas pillow protobuf scipy seaborn tqdm yaml
+    cuda-nvcc
+    -c pytorch -c conda-forge -c open3d-admin -c nvidia -c numba
+
+
+sample train script: python ./pytorch/train.py train --config_path=/home/starlet/kaggle/code/secondpytorch/second/configs/pointpillars/car/xyres_16.config --model_dir=/media/starlet/LdTho/data/sets/kittiv2/results/pointpillars_car16 --resume=True
+CUDA_VISIBLE_DEVICES=1 python ./pytorch/train.py train --config_path=/home/tho/GoogleDrive/code/secondpytorch/second/configs/PiFeNet/jrdb/xyres_10_24m.config --model_dir=/home/tho/GoogleDrive/output/jrdb_xyres_10_24m_dcn_r1 --resume=True
+CUDA_VISIBLE_DEVICES=1 python ./pytorch/train.py train --config_path=/home/tho/GoogleDrive/code/secondpytorch/second/configs/PiFeNet/jrdb/xyres_16_largea_JRDB2022.config --model_dir=/home/tho/GoogleDrive/output/jrdb2022_xyres_16_40m_dcn_unfiltered_r1 --resume=True
+
+CUDA_VISIBLE_DEVICES=0 python ./pytorch/train.py train --config_path=/home/tho/GoogleDrive/code/secondpytorch/second/configs/PiFeNet/jrdb22/xyres_16_largea_JRDB2022.config --model_dir=/home/tho/GoogleDrive/output/jrdb22_filtered_xyres_16_40m_r1 --resume=True
+CUDA_VISIBLE_DEVICES=1 python ./pytorch/train.py train --config_path=/home/tho/GoogleDrive/code/secondpytorch/second/configs/pointpillars/jrdb22/xyres_16.config --model_dir=/home/tho/GoogleDrive/output/PP_jrdb22_filtered_xyres_16_40m_r1 --resume=True
+
+sample eval script: python ./pytorch/train.py evaluate --config_path=/home/starlet/kaggle/code/secondpytorch/second/configs/pointpillars/car/xyres_16.config --model_dir=/media/starlet/LdTho/data/sets/kittiv2/results/pointpillars_car16
+CUDA_VISIBLE_DEVICES=1 python ./pytorch/train.py evaluate --config_path=/home/tho/GoogleDrive/code/secondpytorch/second/configs/PiFeNet/jrdb/xyres_10_24m.config --model_dir=/home/tho/GoogleDrive/output/jrdb_xyres_10_24m_dcn_r2 --ckpt_path=/home/tho/GoogleDrive/output/jrdb_xyres_10_24m_dcn_r2/voxelnet-587088.tckpt
+
+
+CUDA_VISIBLE_DEVICES=0 python ./pytorch/train.py evaluate --config_path=/home/tho/GoogleDrive/code/secondpytorch/second/configs/PiFeNet/jrdb22/xyres_16_largea_JRDB2022.config --model_dir=/home/tho/GoogleDrive/output/jrdb22_filtered_xyres_16_40m_r1 --ckpt_path=/home/tho/GoogleDrive/output/jrdb22_filtered_xyres_16_40m_r1/voxelnet-346624.tckpt
+CUDA_VISIBLE_DEVICES=1 python ./pytorch/train.py evaluate --config_path=/home/tho/GoogleDrive/code/secondpytorch/second/configs/pointpillars/jrdb22/xyres_16.config --model_dir=/home/tho/GoogleDrive/output/PP_jrdb22_filtered_xyres_16_40m_r1 --ckpt_path=/home/tho/GoogleDrive/output/jrdb22_filtered_xyres_16_40m_r1/voxelnet-368288.tckpt
+
+add config field: change proto file and then cd /project/folder && protoc ./second/protos/*.proto --python_out=.
+
+tensorboard: tensorboard --logdir=/media/starlet/LdTho/data/sets/kittiv2/results/pointpillars_car16
+einops seaborn torchvision
+
+avg example to torch time: 3.226 ms
+avg prep time: 15.680 ms
+avg voxel_feature_extractor time = 34.315 ms
+avg middle forward time = 1.204 ms
+avg rpn forward time = 21.456 ms
+avg predict time = 4.672 ms
+
+pkgs/cuda-toolkit/targets/x86_64-linux/lib/stubs/libcuda.so
+backend:  http://127.0.0.1:4444
+rootpath:  /media/starlet/LdTho/data/sets/kittiv2
+infopath:  /media/starlet/LdTho/data/sets/kittiv2/kitti_infos_test.pkl
+detpath:
+
+VAL:
+checkpointPath:  /home/starlet/GoogleDrive/output/DANet_FULL_r3/voxelnet-72384.tckpt
+configPath:  /home/starlet/GoogleDrive/code/secondpytorch/second/configs/DANet/ped_cycle/xyres_16_viz_val.config
+TEST:
+checkpointPath:  /home/starlet/GoogleDrive/output/DANetv5_xyres16_submission150_nosampling_r1/voxelnet-441881.tckpt (for both ped & cyc)
+configPath:  /home/starlet/GoogleDrive/code/secondpytorch/second/configs/DANet/ped_cycle/xyres_16_viz.config
+
+commands:
+python ./kittiviewer/backend/main.py main --port=4444
+link:  http://127.0.0.1:8000/  (used PRIVATE MODE)
+cd ./kittiviewer/frontend && python -m http.server           OR        python -m http.server
+
+
+cudatoolkit-dev addict scikit-image psutil boost einops scikit-learn fire jupyterlab tensorboardx libboost matplotlib numba numpy open3d pandas pillow protobuf scipy seaborn tqdm yaml
+opencv
+
+type: Pedestrian             Pedestrian
+truncated: -1                0.00
+occluded: -1                 0
+alpha: 5.8975                -0.20
+bbox left: 830.9194          712.40
+bbox top: 160.9805           143.00
+bbox right: 940.5917         810.73
+bbox bottom: 314.5463        307.92
+dim height: 1.0803 length    1.89
+dim width: 1.7940 height     0.48
+dim length: 0.6203 width     1.20
+loc cam x: 3.3951            1.84
+loc cam y: 1.5659            1.47
+loc cam z: 8.5806            8.41
+rot y: 6.2634                0.01
+score: 0.7798
+
+
+
+
+
+Visualization
+Val set: 34 (some better, some FP), 156 (real: 000332), 159, 411,69
+Test set: 1054, 2975, 3012, 3014, 3266, 46, 3498, 3071, 3070, 3005, 3007, 3540, 3625, 3673,2144,2201
+Trainval_val set: 84, 86, 95, 116, 121, 128
+
+Car
+config_path= /home/starlet/GoogleDrive/code/secondpytorch/second/configs/DANet/car/xyres_16_submission.config
+ckpt_path= /home/starlet/GoogleDrive/output/DANet_car_xyres16_submission60_r1/voxelnet-181203.tckpt
+
+/home/starlet/GoogleDrive/output/DANet_xyres16_submission150_r1/voxelnet-403733.tckpt
+/home/starlet/GoogleDrive/output/DANet_xyres16_submission150_r1/voxelnet-413270.tckpt
+
+Best for Ped:
+/home/starlet/GoogleDrive/output/DANet_xyres16_submission150_r1/voxelnet-457776.tckpt
+Best for Cyc:
+/home/starlet/GoogleDrive/output/DANet_xyres16_submission150_nosampling_r2/voxelnet-464134.tckpt
+V2 best:
+/home/starlet/GoogleDrive/output/DANetv2_xyres16_submission150_r2/voxelnet-451418.tckpt
+V2 best cyc
+/home/starlet/GoogleDrive/output/DANetv2_xyres16_submission150_r2/voxelnet-438702.tckpt
+
+cyclist: voxelnet-365585.tckpt
+voxelnet-429165.tckpt
+
+submission 5th
+DANet_xyres16_submission150_r1/voxelnet-359227 cyc
+DANet_xyres16_submission150_r1/voxelnet-403733 ped
+
+150_r2
+ped 451 432 422 381
+cyc 381, 406 413 419 438 432
+
+avg prep time: 49.486 ms                        24.743
+avg voxel_feature_extractor time = 24.644 ms    12.322
+avg middle forward time = 1.027 ms              0.5135
+avg rpn forward time = 29.238 ms                14.619
+avg predict time = 4.987 ms                     2.4935
+
+V1: only max pool, 2 sigmoid
+v2: only max pool, 1 sigmoid
+v3: custom mean pool + max pool, 1 sigmoid
+v4: normal mean max pool, 1 sigmoid
+v5: mean max pool task-aware, fixed wrong mean pool
+v6: PiFeNet, fixed wrong taskaware, added 1 taskaware at the end
+
+traveller59 commented on Apr 9, 2019
+@ghimiredhikura
+car Nusc dist AP@0.5, 1.0, 2.0, 4.0
+57.95, 65.08, 68.03, 71.30
+
+worse than baseline in nusc paper: 76% dist AP (thresh=2.0)
+
+SA-Det3D config Nuscenes: https://github.com/AutoVision-cloud/SA-Det3D/blob/main/configs/nuscenes_pointpillar_dsa.yaml
+https://github.com/poodarchu/Det3D/pull/119
+CBGS pointpillars: https://github.com/poodarchu/Det3D/blob/master/examples/point_pillars/configs/nusc_all_point_pillars_mghead_syncbn.py
+
+car Nusc dist AP@0.5, 1.0, 2.0, 4.0
+61.91, 76.75, 80.94, 82.53
+bicycle Nusc dist AP@0.5, 1.0, 2.0, 4.0
+0.00, 0.00, 0.00, 0.00
+bus Nusc dist AP@0.5, 1.0, 2.0, 4.0
+8.72, 25.76, 39.13, 42.55
+construction_vehicle Nusc dist AP@0.5, 1.0, 2.0, 4.0
+0.00, 0.00, 0.27, 1.18
+motorcycle Nusc dist AP@0.5, 1.0, 2.0, 4.0
+12.62, 17.82, 18.31, 18.82
+pedestrian Nusc dist AP@0.5, 1.0, 2.0, 4.0
+55.50, 58.74, 61.27, 63.93
+traffic_cone Nusc dist AP@0.5, 1.0, 2.0, 4.0
+17.47, 20.30, 23.56, 28.63
+trailer Nusc dist AP@0.5, 1.0, 2.0, 4.0
+0.00, 4.76, 18.82, 28.26
+truck Nusc dist AP@0.5, 1.0, 2.0, 4.0
+8.39, 20.62, 27.37, 31.12
+barrier Nusc dist AP@0.5, 1.0, 2.0, 4.0
+10.61, 31.31, 40.60, 46.33
+
+
+
+
+CBGS log: https://drive.google.com/drive/folders/1rhamAqegE9iOp18tzQVam4rOMhHjjnRM
+PP log: https://drive.google.com/drive/folders/1U0bkEQAhcxhDUD42nTCGC0uU0qaTO_Uv
+
+JRDB
+
+jrdb_xyres10_cloud_newsplit_r2/voxelnet-299918.tckpt
+first 17
+Pedestrian AP(Average Precision)@0.50, 0.50, 0.50:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:78.69, 74.42, 61.92
+3d   AP:72.61, 65.54, 54.80
+Pedestrian AP(Average Precision)@0.50, 0.25, 0.25:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:88.30, 86.27, 75.82
+3d   AP:88.26, 86.18, 75.67
+
+Evaluation coco
+Pedestrian coco AP@0.25:0.05:0.70:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:73.85, 70.19, 59.33
+3d   AP:66.36, 63.07, 53.18
+
+
+jrdb_xyres10_cloud_newsplit_r2/voxelnet-392996.tckpt
+first 17
+Pedestrian AP(Average Precision)@0.50, 0.50, 0.50:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:79.08, 74.09, 62.00
+3d   AP:72.71, 68.35, 54.98
+Pedestrian AP(Average Precision)@0.50, 0.25, 0.25:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:87.69, 85.64, 75.24
+3d   AP:87.64, 85.54, 75.08
+
+Evaluation coco
+Pedestrian coco AP@0.25:0.05:0.70:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:73.64, 70.01, 59.12
+3d   AP:66.93, 63.94, 53.00
+
+jrdb_xyres10_cloud_sampling_r1/voxelnet-358776.tckpt
+Pedestrian AP(Average Precision)@0.50, 0.50, 0.50:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:79.95, 75.36, 62.97
+3d   AP:74.04, 69.56, 55.41
+Pedestrian AP(Average Precision)@0.50, 0.25, 0.25:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:91.99, 86.77, 76.26
+3d   AP:88.67, 86.67, 76.08
+
+Evaluation coco
+Pedestrian coco AP@0.25:0.05:0.70:
+bbox AP:0.00, 0.00, 0.00
+bev  AP:74.67, 70.48, 59.37
+3d   AP:67.85, 63.66, 53.21
+clark-center-2019-02-28_1
+
+
+Hard poses
+info idx: 506929, loc: nvidia-aud-2019-01-25_0, pc: 000000, img: 000002
+nvidia-aud-2019-04-18_1 249
+info idx: 575734, loc: outdoor-coupa-cafe-2019-02-06_0, pc: 001537, img: 001539
+tressider-2019-03-16_2 148
+##tressider-2019-04-26_1 419
+tressider-2019-04-26_3 1074
+cubberly-auditorium-2019-04-22_0 1187
+gates-ai-lab-2019-02-08_0 7
+jordan-hall-2019-04-22_0 891
+nvidia-aud-2019-04-18_0 614
+packard-poster-session-2019-03-20_1 338
+stlc-111-2019-04-19_0 124,248
+
+Hard background
+tressider-2019-04-26_3 1504
+## forbes-cafe-2019-01-22_0 1013
+hewlett-packard-intersection-2019-01-24_0 1330,422
+memorial-court-2019-03-16_0 494
+kitti test 816,936,138/183
+
+5m
+info idx: 61652, loc: hewlett-packard-intersection-2019-01-24_0, pc: 000004, img: 000006
+info idx: 32915, loc: huang-basement-2019-01-25_0, pc: 000017, img: 000019
+info idx: 4843, loc: clark-center-2019-02-28_0, pc: 000012, img: 000014
+10m
+info idx: 19010, loc: hewlett-packard-intersection-2019-01-24_0, pc: 000001, img: 000003
+15m
+info idx: 24533, loc: tressider-2019-03-16_0, pc: 000130, img: 000132
+20m
+info idx: 5408, loc: hewlett-packard-intersection-2019-01-24_0, pc: 000951, img: 000953
+25m
+info idx: 1756, loc: clark-center-2019-02-28_0, pc: 000489, img: 000491
+info idx: 2258, loc: clark-center-intersection-2019-02-28_0, pc: 000190, img: 000192
+
+
+conda activate 3detr && conda env export > 3detr.yml
+conda activate 3dlabeler && conda env export > 3dlabeler.yml
+conda activate ezdetr && conda env export > ezdetr.yml
+conda activate jrdb && conda env export > jrdb.yml
+conda activate jrdb_dev && conda env export > jrdb_dev.yml
+conda activate jrdb_web && conda env export > jrdb_web.yml
+conda activate motr && conda env export > motr.yml
+conda activate spconv && conda env export > spconv.yml
+conda activate spconv12cuda11 && conda env export > spconv12cuda11.yml
+
+3detr
+3dlabeler
+ezdetr
+jrdb
+jrdb_dev
+jrdb_web
+motr
+spconv
+spconv12cuda11
+torchenv
