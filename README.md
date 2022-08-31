@@ -80,6 +80,7 @@ python setup.py bdist_wheel
 cd dist && pip install .
 ```
 
+Sample conda environment [PiFeNet.yml](https://github.com/ldtho/PiFeNet/blob/main/PiFeNet.yml) is available for your reference. 
 
 If you want to train with fp16 mixed precision (train faster in RTX series, Titan V/RTX and Tesla V100, but I only have 1080Ti), you need to install [apex](https://github.com/NVIDIA/apex).
 
