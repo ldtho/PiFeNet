@@ -1,8 +1,12 @@
-# PiFeNet implementation for KITTI/JRDB object detection
+## [PiFeNet: Accurate and Real-time 3D Pedestrian Detection Using an Efficient Attentive Pillar Network](https://arxiv.org/abs/2112.15458)
+
+### Official implementation for KITTI/JRDB object detection
 
 This repository is based on [SECOND](https://github.com/traveller59/second.pytorch) project.
 
 ONLY support python 3.6+, pytorch 1.0.0+. Tested in Ubuntu 16.04/18.04/20.04/22.04, Windows 10.
+
+This repo is not optimal on nuScenes dataset, consider using [Det3D](https://github.com/poodarchu/Det3D)
 
 If you want to train nuScenes dataset, see [this](NUSCENES-GUIDE.md).
 
@@ -270,8 +274,13 @@ python ./pytorch/train.py evaluate --config_path=/path/to/config --model_dir=/pr
 Follow the instructions in the [JRDB visualisation toolkit](https://github.com/JRDB-dataset/jrdb_toolkit/tree/main/visualisation)
 
 ### Result:
-![GuidePic](https://raw.githubusercontent.com/ldtho/PiFeNet/tree/main/images/jrdb_2D_viz.png)
-![GuidePic](https://raw.githubusercontent.com/ldtho/PiFeNet/tree/main/images/jrdb_3D_viz.png)
+**_2D:_**
+
+![GuidePic](https://github.com/ldtho/PiFeNet/blob/main/images/jrdb_2D_viz.png?raw=true)
+
+**_3D:_**
+
+![GuidePic](https://github.com/ldtho/PiFeNet/blob/main/images/jrdb_3D_viz.png?raw=true)
 
 ## Citation
 If you find this repo useful, please consider citing us, appreciate it!
