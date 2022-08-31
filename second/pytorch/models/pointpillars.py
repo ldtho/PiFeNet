@@ -104,11 +104,11 @@ class TaskAware(nn.Module):
         return result
 
 
-class DAModule(nn.Module):
+class PAASubModules(nn.Module):
     def __init__(self, n_points, n_channels, reduction_rate=4, channel_att=True,
                  point_att=True, task_aware=True, pool_types=['max', 'mean']):
-        super(DAModule, self).__init__()
-        self.name = 'DAModule'
+        super(PAASubModules, self).__init__()
+        self.name = 'PAASubModules'
         self.use_channel_att = channel_att
         self.use_point_att = point_att
         self.use_task_aware = task_aware
@@ -159,18 +159,18 @@ class AttentionModule(nn.Module):
         return out
 
 
-class DAFeature(nn.Module):
+class PAAModule(nn.Module):
     def __init__(self, dim_channels=9, dim_points=100, reduction_rate=8, boost_channels=64,
                  residual=False, relu=True, channel_att=True, point_att=True, task_aware=True,
                  pool_types=['max', 'mean']):
-        super(DAFeature, self).__init__()
+        super(PAAModule, self).__init__()
         self.residual = residual
-        self.att_module1 = DAModule(n_points=dim_points, n_channels=dim_channels,
-                                    reduction_rate=reduction_rate,
-                                    channel_att=channel_att,
-                                    point_att=point_att,
-                                    task_aware=task_aware,
-                                    pool_types=pool_types)  # linear last
+        self.att_module1 = PAASubModules(n_points=dim_points, n_channels=dim_channels,
+                                         reduction_rate=reduction_rate,
+                                         channel_att=channel_att,
+                                         point_att=point_att,
+                                         task_aware=task_aware,
+                                         pool_types=pool_types)  # linear last
 
         if residual:
             self.fc1 = nn.Sequential(
@@ -194,7 +194,7 @@ class DAFeature(nn.Module):
         return out1
 
 
-class DAFELayer(nn.Module):
+class PAFELayer(nn.Module):
     def __init__(self,
                  in_channels,
                  out_channels,
@@ -210,8 +210,8 @@ class DAFELayer(nn.Module):
                  pool_types=['max', 'mean']
                  ):
         """
-        Dynamic Attention Feature Extraction Layer.
-        The Dynamic Attention Feature Extraction could be composed of a series of these layers, but the PointPillars paper results only
+        Pillar Attention Feature Extraction Layer.
+        The Pillar Attention Feature Extraction could be composed of a series of these layers, but the PointPillars paper results only
         used a single PFNLayer. This layer performs a similar role as second.pytorch.voxelnet.VFELayer.
         :param in_channels: <int>. Number of input channels.
         :param out_channels: <int>. Number of output channels.
@@ -220,7 +220,7 @@ class DAFELayer(nn.Module):
         """
 
         super().__init__()
-        self.name = 'DAFELayer'
+        self.name = 'PAFELayer'
         self.last_vfe = last_layer
         if not self.last_vfe:
             out_channels = out_channels // 2
@@ -234,7 +234,7 @@ class DAFELayer(nn.Module):
             BatchNorm1d = Empty
             Linear = change_default_args(bias=True)(nn.Linear)
 
-        self.extractor = DAFeature(dim_channels=dim_channels,
+        self.extractor = PAAModule(dim_channels=dim_channels,
                                    dim_points=dim_points,
                                    reduction_rate=4,
                                    boost_channels=boost_channels,
@@ -244,7 +244,7 @@ class DAFELayer(nn.Module):
                                    task_aware=task_aware,
                                    pool_types=pool_types
                                    )  # Linear first
-        self.extractor2 = DAFeature(dim_channels=boost_channels,
+        self.extractor2 = PAAModule(dim_channels=boost_channels,
                                     dim_points=dim_points,
                                     reduction_rate=reduction_rate,
                                     boost_channels=boost_channels,
@@ -372,7 +372,7 @@ class PillarFeatureDANet(nn.Module):
                 last_layer = False
             else:
                 last_layer = True
-            pfn_layers.append(DAFELayer(in_filters, out_filters, use_norm, last_layer=last_layer,
+            pfn_layers.append(PAFELayer(in_filters, out_filters, use_norm, last_layer=last_layer,
                                         dim_channels=num_input_features,
                                         dim_points=num_point_per_voxel,
                                         reduction_rate=reduction_rate,
