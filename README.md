@@ -12,7 +12,7 @@ If you want to train nuScenes dataset, see [this](NUSCENES-GUIDE.md).
 
 _WARNING_: you should rerun info generation after every code update.
 
-### Performance in KITTI test 
+### Performance in KITTI test set
 
 ```PiFeNet/KITTI/xyres_16_submission.config``` + 150 epochs:
 
@@ -27,12 +27,14 @@ Pedestrian (Bird's Eye View)	63.25%	53.92%	50.53%
 ### Performance in JRDB test set
 
 ```PiFeNet/jrdb22/xyres_16_largea_JRDB2022.config``` + 40 epochs:
+
+**_JRDB 2019_**:
 ```
-JRDB 2019:
          AP@0.3      AP@0.5     AP@0.7
 PiFeNet  74.284      42.617      4.886
-
-JRDB 2022:
+```
+**_JRDB 2022_**:
+```
          AP@0.3      AP@0.5     AP@0.7
 PiFeNet  70.724      39.838      4.59
 ```
@@ -42,46 +44,60 @@ PiFeNet  70.724      39.838      4.59
 ### 1. Clone code
 
 ```bash
-git clone https://github.com/traveller59/second.pytorch.git
-cd ./second.pytorch/second
+git clone https://github.com/ldtho/PiFeNet.git --recursive
+cd ./PiFeNet/second
 ```
 
 ### 2. Install dependence python packages
 
 It is recommend to use Anaconda package manager.
 
+Create environment:
 ```bash
-conda install scikit-image scipy numba pillow matplotlib
+conda create --name spconv12cuda11 python=3.8.6 pytorch=1.7.1 cudatoolkit=11.0.221 cudatoolkit-dev cmake=3.18.2 cuda-nvcc cudnn boost -c pytorch -c conda-forge -c nvidia
 ```
-
-```bash
-pip install fire tensorboardX protobuf opencv-python
-```
-
-If you don't have Anaconda:
+Install dependencies
 
 ```bash
-pip install numba scikit-image scipy pillow
+conda install addict einops fire jupyterlab jupyter-packaging tensorboard libboost matplotlib numba numpy open3d addict scikit-image psutil boost einops scikit-learn fire jupyterlab tensorboardx libboost matplotlib numba numpy open3d pandas pillow protobuf scipy seaborn tqdm yaml -c pytorch -c conda-forge -c nvidia -c numba -c open3d-admin
+pip install opencv 
 ```
 
-Follow instructions in [spconv](https://github.com/traveller59/spconv) to install spconv. 
+
+Follow instructions in [spconv](https://github.com/traveller59/spconv) to install spconv or you can try:
+```bash
+git clone https://github.com/traveller59/spconv.git --recursive
+cd spconv
+git checkout fad3000249d27ca918f2655ff73c41f39b0f3127 && git submodule update --recursive    
+python setup.py bdist_wheel
+cd dist && pip install .
+```
+
 
 If you want to train with fp16 mixed precision (train faster in RTX series, Titan V/RTX and Tesla V100, but I only have 1080Ti), you need to install [apex](https://github.com/NVIDIA/apex).
 
-If you want to use NuScenes dataset, you need to install [nuscenes-devkit](https://github.com/nutonomy/nuscenes-devkit).
+[//]: # (If you want to use NuScenes dataset, you need to install [nuscenes-devkit]&#40;https://github.com/nutonomy/nuscenes-devkit&#41;.)
 
-### 3. Setup cuda for numba (will be removed in 1.6.0 release)
+[//]: # (### 3. Setup cuda for numba &#40;will be removed in 1.6.0 release&#41;)
 
-you need to add following environment variable for numba.cuda, you can add them to ~/.bashrc:
+[//]: # ()
+[//]: # (you need to add following environment variable for numba.cuda, you can add them to ~/.bashrc:)
 
-```bash
-export NUMBAPRO_CUDA_DRIVER=/usr/lib/x86_64-linux-gnu/libcuda.so
-export NUMBAPRO_NVVM=/usr/local/cuda/nvvm/lib64/libnvvm.so
-export NUMBAPRO_LIBDEVICE=/usr/local/cuda/nvvm/libdevice
-```
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (export NUMBAPRO_CUDA_DRIVER=/usr/lib/x86_64-linux-gnu/libcuda.so)
+
+[//]: # (export NUMBAPRO_NVVM=/usr/local/cuda/nvvm/lib64/libnvvm.so)
+
+[//]: # (export NUMBAPRO_LIBDEVICE=/usr/local/cuda/nvvm/libdevice)
+
+[//]: # (```)
 
 ### 4. add second.pytorch/ to PYTHONPATH
-
+```bash
+export PYTHONPATH=$PYTHONPATH:/path/to/PiFeNet
+```
 ## Prepare dataset
 
 * KITTI Dataset preparation
@@ -105,32 +121,32 @@ Download KITTI dataset and create some directories first:
 
 Then run
 ```bash
-python create_data.py kitti_data_prep --data_path=KITTI_DATASET_ROOT
+python create_data.py kitti_data_prep --root_path=KITTI_DATASET_ROOT
 ```
 
-* [NuScenes](https://www.nuscenes.org) Dataset preparation
+* [JRDB](https://www.nuscenes.org) Dataset preparation
 
 Download NuScenes dataset:
 ```plain
-└── NUSCENES_TRAINVAL_DATASET_ROOT
-       ├── samples       <-- key frames
-       ├── sweeps        <-- frames without annotation
-       ├── maps          <-- unused
-       └── v1.0-trainval <-- metadata and annotations
-└── NUSCENES_TEST_DATASET_ROOT
-       ├── samples       <-- key frames
-       ├── sweeps        <-- frames without annotation
-       ├── maps          <-- unused
-       └── v1.0-test     <-- metadata
+└── train_dataset_with_activity
+       ├── calibration       
+       ├── images          <-- frames without annotation
+       ├── detections      <-- sample test detection - unused
+       └── pointclouds     <-- point cloud files
+└── test_dataset_without_labels
+       ├── calibration       
+       ├── images          <-- frames without annotation
+       ├── detections      <-- sample train detection - unused
+       ├── labels          <-- train set annotations
+       └── pointclouds     <-- point cloud files
 ```
 
 Then run
 ```bash
-python create_data.py nuscenes_data_prep --data_path=NUSCENES_TRAINVAL_DATASET_ROOT --version="v1.0-trainval" --max_sweeps=10
-python create_data.py nuscenes_data_prep --data_path=NUSCENES_TEST_DATASET_ROOT --version="v1.0-test" --max_sweeps=10
---dataset_name="NuscenesDataset"
+python create_data.py jrdb22_data_prep --root_path=JRDB_DATASET_ROOT
 ```
-This will create gt database **without velocity**. to add velocity, use dataset name ```NuscenesDatasetVelo```.
+
+[//]: # (This will create gt database **without velocity**. to add velocity, use dataset name ```NuscenesDatasetVelo```.)
 
 * Modify config file
 
@@ -162,22 +178,25 @@ eval_input_reader: {
 
 ## Usage
 
-### train
 
-I recommend to use script.py to train and eval. see script.py for more details.
+### Train with single GPU
 
-#### train with single GPU
-
+_**KITTI**_:
 ```bash
-python ./pytorch/train.py train --config_path=./configs/car.fhd.config --model_dir=/path/to/model_dir
+python ./pytorch/train.py train --config_path=./configs/PiFeNet/KITTI/xyres_16_submission.config --model_dir=/your/save/dir
 ```
+_**JRDB**_:
+```bash
+python ./pytorch/train.py train --config_path=./configs/PiFeNet/jrdb/xyres_16_largea_JRDB2022.config --model_dir=/your/save/dir
+```
+Note: add ```--resume=True``` if you want to continue training where you left off.
 
 #### train with multiple GPU (need test, I only have one GPU)
 
 Assume you have 4 GPUs and want to train with 3 GPUs:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,3 python ./pytorch/train.py train --config_path=./configs/car.fhd.config --model_dir=/path/to/model_dir --multi_gpu=True
+CUDA_VISIBLE_DEVICES=0,1,3 python ./pytorch/train.py train --config_path=./configs/PiFeNet/KITTI/xyres_16_submission.config --model_dir=/your/save/dir --multi_gpu=True
 ```
 
 Note: The batch_size and num_workers in config file is per-GPU, if you use multi-gpu, they will be multiplied by number of GPUs. Don't modify them manually.
@@ -190,35 +209,19 @@ Modify config file, set enable_mixed_precision to true.
 
 * Make sure "/path/to/model_dir" doesn't exist if you want to train new model. A new directory will be created if the model_dir doesn't exist, otherwise will read checkpoints in it.
 
-* training process use batchsize=6 as default for 1080Ti, you need to reduce batchsize if your GPU has less memory.
-
-* Currently only support single GPU training, but train a model only needs 20 hours (165 epoch) in a single 1080Ti and only needs 50 epoch to reach 78.3 AP with super converge in car moderate 3D in Kitti validation dateset.
+* training process use batchsize=2 as default, you can increase or decrease depend on your GPU capability
 
 ### evaluate
 
 ```bash
-python ./pytorch/train.py evaluate --config_path=./configs/car.fhd.config --model_dir=/path/to/model_dir --measure_time=True --batch_size=1
+python ./pytorch/train.py evaluate --config_path=./configs/PiFeNet/KITTI/xyres_16_submission.config --model_dir=/your/save/dir --measure_time=True --batch_size=1
 ```
 
 * detection result will saved as a result.pkl file in model_dir/eval_results/step_xxx or save as official KITTI label format if you use --pickle_result=False.
 
 ### pretrained model
 
-You can download pretrained models in [google drive](https://drive.google.com/open?id=1YOpgRkBgmSAJwMknoXmitEArNitZz63C). The ```car_fhd``` model is corresponding to car.fhd.config.
-
-Note that this pretrained model is trained before a bug of sparse convolution fixed, so the eval result may slightly worse. 
-
-## Docker (Deprecated. I can't push docker due to network problem.)
-
-You can use a prebuilt docker for testing:
-```
-docker pull scrin/second-pytorch 
-```
-Then run:
-```
-nvidia-docker run -it --rm -v /media/yy/960evo/datasets/:/root/data -v $HOME/pretrained_models:/root/model --ipc=host second-pytorch:latest
-python ./pytorch/train.py evaluate --config_path=./configs/car.config --model_dir=/root/model/car
-```
+You can download pretrained models in [google drive](https://drive.google.com/drive/folders/1IGVV3oswFyBUxTZee10-Xzrx2rYPNyvJ?usp=sharing). The models' configs are the same as above
 
 ## Try Kitti Viewer Web
 
@@ -257,17 +260,31 @@ You should use kitti viewer based on pyqt and pyqtgraph to check data before tra
 run ```python ./kittiviewer/viewer.py```, check following picture to use kitti viewer:
 ![GuidePic](https://raw.githubusercontent.com/traveller59/second.pytorch/master/images/simpleguide.png)
 
-## Concepts
+
+## JRDB visualisation
+
+First run the model, make predictions and convert is to KITTI-similar format
+```bash
+python ./pytorch/train.py evaluate --config_path=/path/to/config --model_dir=/pretrained_model/location --ckpt_path=/path/to/pretrained_model.tckpt
+```
+Follow the instructions in the [JRDB visualisation toolkit](https://github.com/JRDB-dataset/jrdb_toolkit/tree/main/visualisation)
+
+### Result:
+![GuidePic](https://raw.githubusercontent.com/ldtho/PiFeNet/tree/main/images/jrdb_2D_viz.png)
+![GuidePic](https://raw.githubusercontent.com/ldtho/PiFeNet/tree/main/images/jrdb_3D_viz.png)
+
+## Citation
+If you find this repo useful, please consider citing us, appreciate it!
+```bash
+@article{le2021accurate,
+  title={Accurate and Real-time 3D Pedestrian Detection Using an Efficient Attentive Pillar Network},
+  author={Le, Duy-Tho and Shi, Hengcan and Rezatofighi, Hamid and Cai, Jianfei},
+  journal={arXiv preprint arXiv:2112.15458},
+  year={2021}
+}
+```
 
 
-* Kitti lidar box
+## Acknowledgement
 
-A kitti lidar box is consist of 7 elements: [x, y, z, w, l, h, rz], see figure.
-
-![Kitti Box Image](https://raw.githubusercontent.com/traveller59/second.pytorch/master/images/kittibox.png)
-
-All training and inference code use kitti box format. So we need to convert other format to KITTI format before training.
-
-* Kitti camera box
-
-A kitti camera box is consist of 7 elements: [x, y, z, l, h, w, ry].
+* [second.pytorch](https://github.com/traveller59/second.pytorch)
