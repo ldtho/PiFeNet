@@ -4,7 +4,18 @@
 
 ![GuidePic](https://github.com/ldtho/PiFeNet/blob/main/images/JRDB22_viz.png?raw=true)
 
+## Citation
+If you find this repo useful, please consider citing us, appreciate it!
+```bash
+@article{le2022accurate,
+  title={Accurate and Real-time 3D Pedestrian Detection Using an Efficient Attentive Pillar Network},
+  author={Le, Duy-Tho and Shi, Hengcan and Rezatofighi, Hamid and Cai, Jianfei},
+  journal={arXiv preprint arXiv:2112.15458},
+  year={2022}
+}
+```
 
+## Introduction
 This repository is based on [SECOND](https://github.com/traveller59/second.pytorch) project.
 
 ONLY support python 3.6+, pytorch 1.0.0+. Tested in Ubuntu 16.04/18.04/20.04/22.04, Windows 10.
@@ -61,13 +72,14 @@ It is recommend to use Anaconda package manager.
 
 Create environment:
 ```bash
-conda create --name spconv12cuda11 python=3.8.6 pytorch=1.7.1 cudatoolkit=11.0.221 cudatoolkit-dev cmake=3.18.2 cuda-nvcc cudnn boost -c pytorch -c conda-forge -c nvidia
+conda create --name pifenet python=3.8.6 pytorch=1.7.1 cudatoolkit=11.0.221 cudatoolkit-dev cmake=3.18.2 cuda-nvcc cudnn boost -c pytorch -c conda-forge -c nvidia
+conda activate pifenet
 ```
 Install dependencies
 
 ```bash
 conda install addict einops fire jupyterlab jupyter-packaging tensorboard libboost matplotlib numba numpy open3d addict scikit-image psutil boost einops scikit-learn fire jupyterlab tensorboardx libboost matplotlib numba numpy open3d pandas pillow protobuf scipy seaborn tqdm yaml -c pytorch -c conda-forge -c nvidia -c numba -c open3d-admin
-pip install opencv 
+pip install opencv-python 
 ```
 
 
@@ -288,16 +300,7 @@ I also share the JRDB test set [detections in KITTI format](https://drive.google
 
 ![GuidePic](https://github.com/ldtho/PiFeNet/blob/main/images/jrdb_3D_viz.png?raw=true)
 
-## Citation
-If you find this repo useful, please consider citing us, appreciate it!
-```bash
-@article{le2021accurate,
-  title={Accurate and Real-time 3D Pedestrian Detection Using an Efficient Attentive Pillar Network},
-  author={Le, Duy-Tho and Shi, Hengcan and Rezatofighi, Hamid and Cai, Jianfei},
-  journal={arXiv preprint arXiv:2112.15458},
-  year={2021}
-}
-```
+
 
 
 ## Acknowledgement
