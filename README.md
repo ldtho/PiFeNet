@@ -144,7 +144,7 @@ Then run
 python create_data.py kitti_data_prep --root_path=KITTI_DATASET_ROOT
 ```
 
-* [JRDB](https://www.nuscenes.org) Dataset preparation
+* [JRDB](https://www.nuscenes.org) Dataset preparation.
 
 Download NuScenes dataset:
 ```plain
