@@ -1,6 +1,8 @@
 ## [PiFeNet: Accurate and Real-time 3D Pedestrian Detection Using an Efficient Attentive Pillar Network](https://arxiv.org/abs/2112.15458)
 
 ### Official implementation for KITTI/JRDB object detection
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/pifenet-pillar-feature-network-for-real-time/birds-eye-view-object-detection-on-kitti-13)](https://paperswithcode.com/sota/birds-eye-view-object-detection-on-kitti-13?p=pifenet-pillar-feature-network-for-real-time)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/pifenet-pillar-feature-network-for-real-time/3d-object-detection-on-kitti-pedestrian-2)](https://paperswithcode.com/sota/3d-object-detection-on-kitti-pedestrian-2?p=pifenet-pillar-feature-network-for-real-time)
 
 ![GuidePic](https://github.com/ldtho/PiFeNet/blob/main/images/JRDB22_viz.png?raw=true)
 
