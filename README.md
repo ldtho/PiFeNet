@@ -30,6 +30,7 @@ This repo is not optimal on nuScenes dataset, consider using [Det3D](https://git
 If you want to train nuScenes dataset, see [this](NUSCENES-GUIDE.md).
 
 ## News
+12/2022: The paper has been accepted for publication at IEEE Robotics and Automation Letters (RA-L)
 
 02/2022: JRDB dataset supported
 
