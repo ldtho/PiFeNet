@@ -9,15 +9,13 @@
 ## Citation
 If you find this repo useful, please consider citing us, appreciate it!
 ```bash
-@ARTICLE{10003992,
+@article{le2022accurate,
+  title={Accurate and Real-time 3D Pedestrian Detection Using an Efficient Attentive Pillar Network},
   author={Le, Duy Tho and Shi, Hengcan and Rezatofighi, Hamid and Cai, Jianfei},
-  journal={IEEE Robotics and Automation Letters}, 
-  title={Accurate and Real-time 3D Pedestrian Detection Using an Efficient Attentive Pillar Network}, 
+  journal={IEEE Robotics and Automation Letters},
   year={2022},
-  volume={},
-  number={},
-  pages={1-8},
-  doi={10.1109/LRA.2022.3233234}}
+  publisher={IEEE}
+}
 ```
 
 ## Introduction
