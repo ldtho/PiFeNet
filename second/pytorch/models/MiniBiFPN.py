@@ -1,15 +1,12 @@
+import math
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import torchvision.models
-from torch import einsum
 # from second.pytorch.models.BoTnet_CCA import CCA,DyReLUB
-from collections import OrderedDict
-from einops import rearrange
 from torch.nn import init
-import math
-from second.pytorch.utils import SwishImplementation, Swish, SeparableConvBlock, MemoryEfficientSwish, \
-    PositionEmbeddingSine, PositionEmbeddingLearned, inverse_sigmoid, MLP
+
+from second.pytorch.utils import Swish, SeparableConvBlock, MemoryEfficientSwish
+
 
 class MiniBiFPN(nn.Module):  # input size: batch, C, width, length [1,64,400,600]
     def __init__(self,

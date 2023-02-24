@@ -1,14 +1,10 @@
-import time
-
 import numpy as np
 import torch
 from torch import nn
-from torch.nn import functional as F
 from torchvision.models import resnet
 
 from torchplus.nn import Empty, GroupNorm, Sequential
 from torchplus.tools import change_default_args
-from second.pytorch.models.transformerRPN import MHSA,AttentionBlock,LayerNorm2d
 
 REGISTERED_RPN_CLASSES = {}
 

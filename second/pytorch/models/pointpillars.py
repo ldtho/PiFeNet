@@ -7,12 +7,11 @@ Licensed under MIT License [see LICENSE].
 import torch
 from torch import nn
 from torch.nn import functional as F
-from second.pytorch.models.TANet import VoxelFeature_TA
-from second.pytorch.models.voxel_encoder import get_paddings_indicator, register_vfe
+
 from second.pytorch.models.middle import register_middle
+from second.pytorch.models.voxel_encoder import get_paddings_indicator, register_vfe
 from torchplus.nn import Empty
 from torchplus.tools import change_default_args
-import numpy as np
 
 
 class PCAttention(nn.Module):
