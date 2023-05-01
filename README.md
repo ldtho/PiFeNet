@@ -245,7 +245,7 @@ python ./pytorch/train.py evaluate --config_path=./configs/PiFeNet/KITTI/xyres_1
 
 ### pretrained model
 
-You can download pretrained models in [google drive](https://drive.google.com/drive/folders/1IGVV3oswFyBUxTZee10-Xzrx2rYPNyvJ?usp=sharing). The models' configs are the same as above
+You can download pretrained models in [google drive](https://drive.google.com/drive/folders/1zQ-997yOlFlLMn2HuPt0jKAnUyDADOul?usp=share_link). The models' configs are the same as above
 
 ## Try Kitti Viewer Web
 
